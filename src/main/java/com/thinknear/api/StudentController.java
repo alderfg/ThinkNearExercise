@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.thinknear.model.Student;
@@ -18,14 +17,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/student")
 @Api(tags = { "Student" })
 public class StudentController {
 
 	@Autowired
 	StudentRepository studentRepository;
 
-	@GetMapping
+	@GetMapping("/students")
 	@ApiOperation(value = "Browse list of all Student", response = Student.class)
 	public List<?> listAll() {
 
@@ -34,7 +32,7 @@ public class StudentController {
 		return lstStudent;
 	}
 
-	@GetMapping("/classCode={classCode}")
+	@GetMapping("/classes/{classCode}/students")
 	@ApiOperation(value = "View all Students assigned to a Class", response = Student.class)
 	public List<?> listAllByClass(@PathVariable(value = "classCode") String classCode) {
 
@@ -43,7 +41,7 @@ public class StudentController {
 		return lista;
 	}
 
-	@GetMapping("/search")
+	@GetMapping("/students/search")
 	@ApiOperation(value = "Search Student by available fields/associations", response = Student.class)
 	public List<?> listAllByFields(@RequestParam(value = "classCode", required = false) String classCode,
 			@RequestParam(value = "lastName", required = false) String lastName,
@@ -54,7 +52,7 @@ public class StudentController {
 		return lstStudent;
 	}
 
-	@PostMapping
+	@PostMapping("/students")
 	@ApiOperation(value = "Create Student", response = Student.class)
 	public Student create(@RequestBody Student student) {
 
@@ -63,7 +61,7 @@ public class StudentController {
 		return studentCreated;
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/students/{id}")
 	@ApiOperation(value = "Delete Student", response = String.class)
 	public String delete(@PathVariable(value = "id") int studentId) {
 
@@ -72,7 +70,7 @@ public class StudentController {
 		return "Success";
 	}
 
-	@PutMapping
+	@PutMapping("/students")
 	@ApiOperation(value = "Update Student", response = Student.class)
 	public Student update(@RequestBody Student student) {
 
